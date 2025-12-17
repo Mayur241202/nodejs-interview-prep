@@ -697,8 +697,8 @@ em {
 /* Large Desktop (1440px+) - Keep original spacing */
 @media (min-width: 1440px) {
     .theory-card {
-        margin-left: 12rem;
-        margin-right: 12rem;
+        margin-left: 10rem;
+        margin-right: 10rem;
     }
 }
 
