@@ -479,12 +479,14 @@ pre::-webkit-scrollbar-thumb:hover {
     font-weight: 700;
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(0, 212, 255, 0.3);
+    opacity: 0.25;
 }
 
 .copy-btn:hover {
     background: var(--accent-hover);
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(0, 212, 255, 0.4);
+    opacity: 0.25;
 }
 
 .copy-btn:active {
@@ -698,7 +700,7 @@ em {
 @media (min-width: 1440px) {
     .theory-card {
         margin-left: 10rem;
-        margin-right: 10rem;
+        margin-right: 12rem;
     }
 }
 
