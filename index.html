@@ -4115,6 +4115,45 @@ process.on('unhandledRejection', (reason, promise) => {
 
     </div>
 
+    <script>
+        // Theme Toggle Function
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme') || 'light';
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+
+            // Update button text and icon
+            const icon = document.getElementById('theme-icon');
+            const text = document.getElementById('theme-text');
+
+            if (newTheme === 'dark') {
+                icon.textContent = '☀️';
+                text.textContent = 'Light';
+            } else {
+                icon.textContent = '🌙';
+                text.textContent = 'Dark';
+            }
+        }
+
+        // Initialize theme button on page load
+        window.addEventListener('DOMContentLoaded', function () {
+            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+            const icon = document.getElementById('theme-icon');
+            const text = document.getElementById('theme-text');
+
+            if (currentTheme === 'dark') {
+                icon.textContent = '☀️';
+                text.textContent = 'Light';
+            } else {
+                icon.textContent = '🌙';
+                text.textContent = 'Dark';
+            }
+        });
+    </script>
+
     <script src="app.js"></script>
 
     <button id="scrollToTop" class="scroll-to-top">↑</button>
@@ -4140,7 +4179,6 @@ process.on('unhandledRejection', (reason, promise) => {
             });
         });
     </script>
-
 
 </body>
 
