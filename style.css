@@ -40,6 +40,44 @@
     --info: #60a5fa;
 }
 
+.scroll-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: #00d4ff;
+    color: #1a1a2e;
+    border: none;
+    border-radius: 50%;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 212, 255, 0.5);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+}
+
+.scroll-to-top.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.scroll-to-top:hover {
+    background: #00e6ff;
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(0, 212, 255, 0.7);
+}
+
+/* Dark mode support */
+[data-theme="dark"] .scroll-to-top {
+    color: #0f0f1a;
+}
+
 * {
     box-sizing: border-box;
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;

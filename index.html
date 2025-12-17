@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="style.css">
     <script>
         // Initialize theme from localStorage or system preference
-        (function() {
-            const savedTheme = localStorage.getItem('theme') || 
+        (function () {
+            const savedTheme = localStorage.getItem('theme') ||
                 (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
             document.documentElement.setAttribute('data-theme', savedTheme);
         })();
@@ -466,7 +466,7 @@
                 </ul>
 
                 <p><strong>Example:</strong></p>
-                <pre >
+                <pre>
 <code>fs.readFile('data.txt', function callback(err, data) {
     console.log(data);  // This runs LATER, after file is read
 });
@@ -589,7 +589,7 @@ console.log('Continuing...');  // This runs IMMEDIATELY</code>
                 </div>
 
                 <h3>💻 Quick Example: Predicting Execution Order</h3>
-                <pre >
+                <pre>
 <code>console.log('1: Start');
 
 setTimeout(() => {
@@ -641,7 +641,7 @@ console.log('4: End');
                 <h3>🧩 Example with f1, f2, f3, f4 (Synchronous)</h3>
                 <p>Consider this pseudo-code:</p>
 
-                <pre >
+                <pre>
 <code>function f1() {
   f3(); // callback-style but synchronous call
 }
@@ -681,7 +681,7 @@ f2();</code>
                 <h3>⚡ Where Async Callbacks Are Different</h3>
                 <p>Now look at a Node-style async version:</p>
 
-                <pre >
+                <pre>
 <code>function f1() {
   asyncOp1(f3); // f3 is a callback, NOT called immediately
 }
@@ -747,7 +747,7 @@ console.log("end");</code>
                 <h4>📊 Two Cases Compared</h4>
 
                 <h5>Case 1: Pure Synchronous Functions (No Async)</h5>
-                <pre >
+                <pre>
 <code>function f1() {
   f3(); // normal sync call
 }
@@ -776,7 +776,7 @@ f2();</code>
                 </div>
 
                 <h5>Case 2: Async Operations + Event Loop</h5>
-                <pre >
+                <pre>
 <code>fs.readFile("a.txt", function f3(err, data) { 
   console.log("File read complete");
 });
@@ -869,7 +869,8 @@ setTimeout(function f4() {
                             <td style="border: 1px solid #444; padding: 10px;"><strong>Heavy I/O work</strong></td>
                             <td style="border: 1px solid #444; padding: 10px;">Background (OS/libuv pool)</td>
                             <td style="border: 1px solid #444; padding: 10px;">The actual file reading, DNS lookup,
-                                crypto operations run in libuv thread pool (4 threads by default) [[ref:37][[ref:39]</td>
+                                crypto operations run in libuv thread pool (4 threads by default) [[ref:37][[ref:39]
+                            </td>
                         </tr>
                         <tr>
                             <td style="border: 1px solid #444; padding: 10px;"><strong>Callback execution</strong></td>
@@ -887,7 +888,7 @@ setTimeout(function f4() {
                 </div>
 
                 <h4>🔄 Complete Flow Example</h4>
-                <pre >
+                <pre>
 <code>console.log("A");                    // Main thread: runs immediately
 
 setTimeout(() => {                   // Main thread: registers timer
@@ -1078,7 +1079,7 @@ console.log("C");                    // Main thread: runs immediately
                 <h3>💻 Complete Example: Step-by-Step Walkthrough</h3>
 
                 <h4>📝 The Code</h4>
-                <pre >
+                <pre>
 <code>const fs = require("fs");
 
 console.log("A");
@@ -1095,13 +1096,13 @@ console.log("C");</code>
                 <h4>🔍 Step-by-Step Execution</h4>
 
                 <div class="code-output">
-                    <h5 >Step 1: Start – Main Thread + Call Stack</h5>
+                    <h5>Step 1: Start – Main Thread + Call Stack</h5>
                     <p>Node.js starts your script on the main thread [[ref:33].</p>
                     <p><strong>Call stack:</strong> <code>[]</code> → then global code starts executing</p>
                 </div>
 
                 <div class="code-output">
-                    <h5 >Step 2: console.log("A")</h5>
+                    <h5>Step 2: console.log("A")</h5>
                     <p><code>console.log</code> is called on the main thread.</p>
                     <p><strong>Call stack:</strong> <code>[console.log]</code></p>
                     <p><strong>Action:</strong> Prints <code>A</code>, then returns</p>
@@ -1110,7 +1111,7 @@ console.log("C");</code>
                 </div>
 
                 <div class="code-output">
-                    <h5 >Step 3: fs.readFile("file.txt", "utf8", onRead)</h5>
+                    <h5>Step 3: fs.readFile("file.txt", "utf8", onRead)</h5>
                     <p>The function <code>fs.readFile</code> is called on the main thread.</p>
                     <p><strong>Call stack:</strong> <code>[fs.readFile]</code></p>
                     <p><strong>Inside fs.readFile:</strong></p>
@@ -1130,7 +1131,7 @@ console.log("C");</code>
                 </div>
 
                 <div class="code-output">
-                    <h5 >Step 4: console.log("C")</h5>
+                    <h5>Step 4: console.log("C")</h5>
                     <p>Now the next line in your JS runs: <code>console.log("C")</code> on the main thread.</p>
                     <p><strong>Call stack:</strong> <code>[console.log]</code></p>
                     <p><strong>Action:</strong> Prints <code>C</code>, then returns</p>
@@ -1142,7 +1143,7 @@ C</code></pre>
                 </div>
 
                 <div class="code-output">
-                    <h5 >Step 5: Background I/O Finishes</h5>
+                    <h5>Step 5: Background I/O Finishes</h5>
                     <p>Some time later:</p>
                     <ul>
                         <li>The OS / worker thread finishes reading <code>file.txt</code> [[ref:37]</li>
@@ -1154,7 +1155,7 @@ C</code></pre>
                 </div>
 
                 <div class="code-output">
-                    <h5 >Step 6: Event Loop Runs the Callback on Main Thread</h5>
+                    <h5>Step 6: Event Loop Runs the Callback on Main Thread</h5>
                     <p>The event loop, running on the main thread, checks [[ref:28][[ref:33]:</p>
                     <ul>
                         <li>Is the call stack empty? <strong>Yes.</strong></li>
@@ -1173,7 +1174,7 @@ C</code></pre>
                 </div>
 
                 <h4>✅ Final Output Order</h4>
-                <pre >
+                <pre>
 <code>A
 C
 B</code>
@@ -1221,7 +1222,7 @@ B</code>
                 <h3>🧪 Practice Example: Predict the Output</h3>
                 <p>Try predicting the output order for this code:</p>
 
-                <pre >
+                <pre>
 <code>console.log("1");
 
 setTimeout(() => {
@@ -1241,7 +1242,7 @@ console.log("4");</code>
                         <summary style="cursor:pointer; color:#4CAF50; font-weight:bold;">Click to see answer</summary>
                         <div style="margin-top:10px; padding:10px; background:#2d2d2d; border-radius:4px;">
                             <p><strong>Output:</strong></p>
-                            <pre ><code>1
+                            <pre><code>1
 4
 3
 2</code></pre>
@@ -1290,7 +1291,7 @@ console.log("4");</code>
                     after the
                     I/O finishes [[ref:28].</p>
 
-                <pre >
+                <pre>
 <code>fs.readFile("a.txt", "utf8", function onRead(err, data) {
   // this is the callback
 });</code>
@@ -1409,7 +1410,7 @@ console.log("4");</code>
                 </ul>
 
                 <p><strong>You register listeners using:</strong></p>
-                <pre >
+                <pre>
 <code>// Using .on() for event listeners
 server.on('request', (req, res) => {
   // This runs when 'request' event occurs
@@ -1549,7 +1550,7 @@ http.createServer((req, res) => {
                 <h4>🎯 Practical Takeaways</h4>
 
                 <div class="code-output">
-                    <h5 >For Web/App Servers</h5>
+                    <h5>For Web/App Servers</h5>
                     <p>Handling more concurrent connections efficiently is why <strong>event-driven, non-blocking
                             servers (like
                             Node.js) scale well</strong> for I/O-bound workloads [[ref:33][[ref:37]:</p>
@@ -1560,7 +1561,7 @@ http.createServer((req, res) => {
                 </div>
 
                 <div class="code-output">
-                    <h5 >For Databases</h5>
+                    <h5>For Databases</h5>
                     <p>DBs allow multiple concurrent sessions but have limits [[ref:44]:</p>
                     <ul>
                         <li>Each open connection consumes RAM</li>
@@ -1633,9 +1634,10 @@ http.createServer((req, res) => {
                 <h4>⚡ For Node.js Context</h4>
                 <p>When you write an HTTP server with Node's <code>http</code> module or Express, <strong>that program
                         itself is
-                        acting as a web server</strong>—accepting requests and sending responses over HTTP [[ref:43].</p>
+                        acting as a web server</strong>—accepting requests and sending responses over HTTP [[ref:43].
+                </p>
 
-                <pre >
+                <pre>
 <code>const http = require('http');
 
 const server = http.createServer((req, res) => {
@@ -1708,7 +1710,7 @@ server.listen(3000, () => {
                     where a resource is and how to get it.</p>
 
                 <h5>🧩 URL Structure</h5>
-                <pre >
+                <pre>
 <code>protocol://hostname:port/path?query
 
 Example: https://www.google.com:443/search?q=node</code>
@@ -1993,7 +1995,8 @@ Example: https://www.google.com:443/search?q=node</code>
                             <td style="border: 1px solid #444; padding: 10px;">More complex, interactive programs that
                                 accept arguments and options (flags) to perform various functions</td>
                             <td style="border: 1px solid #444; padding: 10px;"><code>git commit -m "msg"</code>,
-                                <code>npm install</code>, <code>create-react-app</code></td>
+                                <code>npm install</code>, <code>create-react-app</code>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -2010,7 +2013,8 @@ Example: https://www.google.com:443/search?q=node</code>
                 <h4>💻 Examples in Node.js</h4>
                 <ul>
                     <li><strong>NPM:</strong> A CLI tool itself! Commands like <code>npm init</code>,
-                        <code>npm install</code></li>
+                        <code>npm install</code>
+                    </li>
                     <li><strong>Nodemon:</strong> Watches your files and restarts your server automatically
                         (<code>nodemon server.js</code>)</li>
                     <li><strong>Create React App:</strong> Sets up a whole React project
@@ -2028,7 +2032,8 @@ Example: https://www.google.com:443/search?q=node</code>
                 <h4>📖 What Are Microservices?</h4>
                 <p><strong>Microservices</strong> (or microservice architecture) is an approach to software development
                     where a single application is built as a <strong>suite of small, independent services</strong>
-                    [[ref:52][[ref:55]. Each service runs in its own process and communicates with other services, usually
+                    [[ref:52][[ref:55]. Each service runs in its own process and communicates with other services,
+                    usually
                     through HTTP/REST APIs.</p>
 
                 <p>This is the opposite of a <strong>Monolithic architecture</strong>, where the entire application
@@ -2088,7 +2093,7 @@ Example: https://www.google.com:443/search?q=node</code>
                     Node.js/Express app) [[ref:55].</p>
 
                 <div class="code-output">
-                    <h5 >Structure:</h5>
+                    <h5>Structure:</h5>
                     <ul>
                         <li><strong>Frontend:</strong> HTML/React code inside the same project</li>
                         <li><strong>Backend:</strong> Authentication, Payment, Product logic all in one server folder
@@ -2097,11 +2102,11 @@ Example: https://www.google.com:443/search?q=node</code>
                             products</li>
                     </ul>
 
-                    <h5 >How it works:</h5>
+                    <h5>How it works:</h5>
                     <p>When a user logs in, the same server process handles the request. When they pay, that same
                         process handles the payment.</p>
 
-                    <h5 >Pros & Cons:</h5>
+                    <h5>Pros & Cons:</h5>
                     <ul>
                         <li>✅ <strong>Pros:</strong> Easy to deploy (just one server), simple to debug locally [[ref:52]
                         </li>
@@ -2116,7 +2121,7 @@ Example: https://www.google.com:443/search?q=node</code>
                 <p><strong>Netflix and Amazon</strong> are the most famous examples [[ref:52].</p>
 
                 <div class="code-output">
-                    <h5 >Structure:</h5>
+                    <h5>Structure:</h5>
                     <p>The application is split into hundreds of small, separate applications:</p>
                     <ul>
                         <li><strong>User Service:</strong> Handles only login/signup (maybe Node.js)</li>
@@ -2125,7 +2130,7 @@ Example: https://www.google.com:443/search?q=node</code>
                         <li><strong>Billing Service:</strong> Handles only credit cards (maybe Java for security)</li>
                     </ul>
 
-                    <h5 >How it works:</h5>
+                    <h5>How it works:</h5>
                     <p>When you open Netflix:</p>
                     <ol>
                         <li>Your app talks to the <strong>User Service</strong> to log you in</li>
@@ -2134,7 +2139,7 @@ Example: https://www.google.com:443/search?q=node</code>
                             "suggestions" are broken [[ref:52]</li>
                     </ol>
 
-                    <h5 >Pros & Cons:</h5>
+                    <h5>Pros & Cons:</h5>
                     <ul>
                         <li>✅ <strong>Pros:</strong> Highly scalable (add servers just for "Video Streaming" during peak
                             hours) [[ref:52]</li>
@@ -2190,12 +2195,14 @@ Example: https://www.google.com:443/search?q=node</code>
 
                 <h5>🏢 Monolithic: "One Big API"</h5>
                 <p>In a monolith, you typically have <strong>one main API base URL</strong> (e.g.,
-                    <code>api.myapp.com</code>) that handles everything—users, orders, payments, products [[ref:55].</p>
+                    <code>api.myapp.com</code>) that handles everything—users, orders, payments, products [[ref:55].
+                </p>
                 <ul>
                     <li>It might have 100 different endpoints, but they all live in <strong>one server
                             application</strong></li>
                     <li>Example: <code>api.myapp.com/users</code>, <code>api.myapp.com/products</code>,
-                        <code>api.myapp.com/orders</code></li>
+                        <code>api.myapp.com/orders</code>
+                    </li>
                     <li><strong>Structure:</strong> One codebase, one server process [[ref:55]</li>
                 </ul>
 
@@ -2211,7 +2218,8 @@ Example: https://www.google.com:443/search?q=node</code>
 
                 <h5>🌐 The "One API" Illusion (API Gateway)</h5>
                 <p>To the outside world, microservices often <strong>look like one big API</strong> because of an
-                    <strong>API Gateway</strong>:</p>
+                    <strong>API Gateway</strong>:
+                </p>
                 <ul>
                     <li>The user still sends requests to <code>api.netflix.com</code></li>
                     <li>The API Gateway sits in front and routes:
@@ -2243,7 +2251,7 @@ Example: https://www.google.com:443/search?q=node</code>
 
                 <h4>🏢 1. Monolithic: One API, One Manager</h4>
                 <div class="code-output">
-                    <h5 >🏬 Structure: Think of it like a Department Store (like Walmart)</h5>
+                    <h5>🏬 Structure: Think of it like a Department Store (like Walmart)</h5>
                     <ul>
                         <li><strong>Logic:</strong> There is one massive building (server). Inside, there are many
                             departments (users, products, orders), but they are all managed by one central
@@ -2257,7 +2265,7 @@ Example: https://www.google.com:443/search?q=node</code>
 
                 <h4>🏪 2. Microservices: Many APIs, Many Specialists</h4>
                 <div class="code-output">
-                    <h5 >🛍️ Structure: Think of it like a Shopping Mall</h5>
+                    <h5>🛍️ Structure: Think of it like a Shopping Mall</h5>
                     <ul>
                         <li><strong>Logic:</strong> The mall has many independent shops (Nike, Apple, Starbucks)</li>
                         <li><strong>Request Handling:</strong> Each shop (service) has its own manager (API)
@@ -2320,7 +2328,8 @@ Example: https://www.google.com:443/search?q=node</code>
                         <li>The <strong>Header</strong> is actually a <strong>completely separate React
                                 application</strong> hosted on <code>header.com</code></li>
                         <li>The <strong>Sidebar</strong> is another separate React app hosted on
-                            <code>sidebar.com</code></li>
+                            <code>sidebar.com</code>
+                        </li>
                         <li>The <strong>Product List</strong> is a third React app hosted on <code>products.com</code>
                         </li>
                         <li>Your main page just <strong>stitches them together</strong></li>
@@ -2416,7 +2425,8 @@ Example: https://www.google.com:443/search?q=node</code>
                             <td style="border: 1px solid #444; padding: 10px;">The client sends requests to
                                 <code>/users</code> or <code>/orders</code> on the Gateway, and the Gateway knows
                                 exactly which microservice (e.g., <code>user-service:3000</code> or
-                                <code>order-service:4000</code>) should handle it [[ref:57][[ref:58]</td>
+                                <code>order-service:4000</code>) should handle it [[ref:57][[ref:58]
+                            </td>
                         </tr>
                         <tr>
                             <td style="border: 1px solid #444; padding: 10px;"><strong>Security
@@ -2514,7 +2524,8 @@ Example: https://www.google.com:443/search?q=node</code>
                         [[ref:61]</li>
                     <li><strong>Safety:</strong> Variables in one module don't mess up variables in another. (e.g.,
                         <code>var name = "User"</code> in one file won't overwrite <code>var name = "Admin"</code> in
-                        another) [[ref:64]</li>
+                        another) [[ref:64]
+                    </li>
                 </ul>
 
                 <h4>📋 Three Types of Modules in Node.js</h4>
@@ -2559,7 +2570,7 @@ Example: https://www.google.com:443/search?q=node</code>
                 <h4>💻 How Modules Work (Code Example)</h4>
 
                 <h5>1. Creating a Module (math.js)</h5>
-                <pre >
+                <pre>
 <code>// This variable is private (only inside this file)
 const secret = 123;
 
@@ -2573,7 +2584,7 @@ module.exports = add;</code>
 </pre>
 
                 <h5>2. Using a Module (app.js)</h5>
-                <pre >
+                <pre>
 <code>// Importing the code
 const addFunction = require('./math.js');
 
@@ -2613,11 +2624,11 @@ console.log(addFunction(2, 3)); // Output: 5</code>
                     [[ref:65].</p>
 
                 <div class="code-output">
-                    <h5 >How It Works:</h5>
+                    <h5>How It Works:</h5>
                     <p>When you send a photo over the internet, TCP chops it into tiny packets (puzzle pieces). It
                         numbers them (1, 2, 3...) and sends them [[ref:62].</p>
 
-                    <h5 >Why It's Special:</h5>
+                    <h5>Why It's Special:</h5>
                     <ul>
                         <li><strong>Reliable:</strong> If Packet #2 gets lost, TCP notices and asks: "Send #2 again!"
                             [[ref:65]</li>
@@ -2636,7 +2647,7 @@ console.log(addFunction(2, 3)); // Output: 5</code>
                     Addresses like <code>142.250.190.46</code>) [[ref:62].</p>
 
                 <div class="code-output">
-                    <h5 >How It Works:</h5>
+                    <h5>How It Works:</h5>
                     <ol>
                         <li>You type <code>google.com</code> in your browser</li>
                         <li>Your computer asks a DNS Server: "What is the number for google.com?" [[ref:62]</li>
@@ -2656,7 +2667,7 @@ console.log(addFunction(2, 3)); // Output: 5</code>
                     HTTP is that language [[ref:65].</p>
 
                 <div class="code-output">
-                    <h5 >How It Works:</h5>
+                    <h5>How It Works:</h5>
                     <ul>
                         <li><strong>Request:</strong> Your browser says (in HTTP language): "GET /image.jpg" [[ref:62]
                         </li>
@@ -2664,7 +2675,7 @@ console.log(addFunction(2, 3)); // Output: 5</code>
                             [[ref:62]</li>
                     </ul>
 
-                    <h5 >Real World: Coffee Shop</h5>
+                    <h5>Real World: Coffee Shop</h5>
                     <ul>
                         <li>You (Client): "Can I have a Latte?" (GET Request)</li>
                         <li>Barista (Server): "Sure, here it is." (200 OK Response)</li>
@@ -2744,7 +2755,8 @@ console.log(addFunction(2, 3)); // Output: 5</code>
                         <tr>
                             <td style="border: 1px solid #444; padding: 10px;"><strong>Passwords (Crucial)</strong></td>
                             <td style="border: 1px solid #444; padding: 10px;">Never store plain passwords. Use
-                                <code>bcrypt</code> to hash passwords before saving [[ref:66][[ref:67]</td>
+                                <code>bcrypt</code> to hash passwords before saving [[ref:66][[ref:67]
+                            </td>
                             <td style="border: 1px solid #444; padding: 10px;">"I use bcrypt to hash them with a salt"
                                 [[ref:68]</td>
                         </tr>
@@ -2792,14 +2804,14 @@ console.log(addFunction(2, 3)); // Output: 5</code>
                 <p>Instead, bcrypt turns "secret123" into a scrambled mess like <code>$2b$10$wO....</code> [[ref:69]</p>
 
                 <div class="code-output">
-                    <h5 >🔑 Key Feature: Salting</h5>
+                    <h5>🔑 Key Feature: Salting</h5>
                     <p>It adds a <strong>salt</strong> (random data) to the password before hashing, so even if two
                         users have the same password ("password123"), their hashes look completely different
                         [[ref:68][[ref:69].</p>
                 </div>
 
                 <h5>💻 Code Example:</h5>
-                <pre >
+                <pre>
 <code>const bcrypt = require('bcrypt');
 
 // Hash a password (Sign up)
@@ -2847,7 +2859,7 @@ const isMatch = await bcrypt.compare('myPassword', hash);
                 </table>
 
                 <h5>💻 Code Example:</h5>
-                <pre >
+                <pre>
 <code>const jwt = require('jsonwebtoken');
 
 // Create a token (Login)
@@ -2873,7 +2885,7 @@ const decoded = jwt.verify(token, 'mySecretKey');
                 </ul>
 
                 <h5>💻 Code Example:</h5>
-                <pre >
+                <pre>
 <code>const crypto = require('crypto');
 
 // Generate a random secure token
@@ -2883,8 +2895,10 @@ const randomToken = crypto.randomBytes(32).toString('hex');
 
                 <div class="interview-tip">
                     <strong>🎯 Interview Summary:</strong> "<code>bcrypt</code> is for hashing passwords securely so
-                    they can be stored in a database [[ref:66][[ref:67]. <code>jsonwebtoken</code> (JWT) is for generating
-                    tokens that authenticate users and maintain their session stateless [[ref:71]. <code>crypto</code> is
+                    they can be stored in a database [[ref:66][[ref:67]. <code>jsonwebtoken</code> (JWT) is for
+                    generating
+                    tokens that authenticate users and maintain their session stateless [[ref:71]. <code>crypto</code>
+                    is
                     Node's built-in module for general cryptographic tasks like generating random bytes or hashing
                     files."
                 </div>
@@ -2911,7 +2925,8 @@ const randomToken = crypto.randomBytes(32).toString('hex');
                         <tr>
                             <td style="border: 1px solid #444; padding: 10px;"><strong>How you use it</strong></td>
                             <td style="border: 1px solid #444; padding: 10px;">Install via <code>npm install</code> and
-                                <code>require()</code> or <code>import</code> it</td>
+                                <code>require()</code> or <code>import</code> it
+                            </td>
                         </tr>
                         <tr>
                             <td style="border: 1px solid #444; padding: 10px;"><strong>Control</strong></td>
@@ -2921,7 +2936,8 @@ const randomToken = crypto.randomBytes(32).toString('hex');
                         <tr>
                             <td style="border: 1px solid #444; padding: 10px;"><strong>Examples</strong></td>
                             <td style="border: 1px solid #444; padding: 10px;"><code>bcrypt</code>, <code>lodash</code>,
-                                <code>moment</code> [[ref:67]</td>
+                                <code>moment</code> [[ref:67]
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -2993,12 +3009,14 @@ const randomToken = crypto.randomBytes(32).toString('hex');
                         <tr>
                             <td style="border: 1px solid #444; padding: 10px;"><strong>Flexibility</strong></td>
                             <td style="border: 1px solid #444; padding: 10px;">High (use it wherever you want)</td>
-                            <td style="border: 1px solid #444; padding: 10px;">Low (must follow its rules) [[ref:75]</td>
+                            <td style="border: 1px solid #444; padding: 10px;">Low (must follow its rules) [[ref:75]
+                            </td>
                         </tr>
                         <tr>
                             <td style="border: 1px solid #444; padding: 10px;"><strong>Example</strong></td>
                             <td style="border: 1px solid #444; padding: 10px;"><code>lodash</code>, <code>bcrypt</code>,
-                                <code>axios</code> [[ref:67]</td>
+                                <code>axios</code> [[ref:67]
+                            </td>
                             <td style="border: 1px solid #444; padding: 10px;">Express.js, NestJS [[ref:75]</td>
                         </tr>
                     </tbody>
@@ -3025,7 +3043,7 @@ const randomToken = crypto.randomBytes(32).toString('hex');
                     with many other libraries/packages to solve common problems for you [[ref:75].</p>
 
                 <div class="code-output">
-                    <h5 >Example: NestJS Framework Includes:</h5>
+                    <h5>Example: NestJS Framework Includes:</h5>
                     <ul>
                         <li>A library for routing (finding pages)</li>
                         <li>A library for security</li>
@@ -3056,7 +3074,7 @@ const randomToken = crypto.randomBytes(32).toString('hex');
                     function" [[ref:75].</p>
 
                 <h5>💻 Code Example (Express.js):</h5>
-                <pre >
+                <pre>
 <code>// If user goes to "mysite.com/hello"
 app.get('/hello', (req, res) => {
     res.send('Hello World!');
@@ -3086,7 +3104,7 @@ app.get('/hello', (req, res) => {
                 </ul>
 
                 <h5>💻 Code Example:</h5>
-                <pre >
+                <pre>
 <code>// Middleware function
 function checkLogin(req, res, next) {
     if (req.userIsLoggedIn) {
@@ -3116,7 +3134,7 @@ app.get('/dashboard', checkLogin, (req, res) => {
                     instead of waiting for the whole thing to finish.</p>
 
                 <div class="code-output">
-                    <h5 >Problem: Watching a 2GB Movie</h5>
+                    <h5>Problem: Watching a 2GB Movie</h5>
                     <ul>
                         <li><strong>Without Streams:</strong> Download the entire 2GB file before you can watch the
                             first second (Slow & uses lots of memory)</li>
@@ -3143,7 +3161,7 @@ app.get('/dashboard', checkLogin, (req, res) => {
                     asynchronous operation.</p>
 
                 <div class="code-output">
-                    <h5 >🍔 Restaurant Analogy</h5>
+                    <h5>🍔 Restaurant Analogy</h5>
                     <p><strong>Problem:</strong> You order food at a busy restaurant. You can't stand at the counter
                         waiting for 20 minutes (blocking the line).</p>
 
@@ -3187,7 +3205,7 @@ app.get('/dashboard', checkLogin, (req, res) => {
 
                 <p>In the old "callback style," your code would look like a sideways pyramid:</p>
 
-                <pre >
+                <pre>
 <code>fs.readFile('user.txt', function(err, id) {
     if (err) throw err;
     db.query('SELECT * FROM users WHERE id=' + id, function(err, user) {
@@ -3212,7 +3230,7 @@ app.get('/dashboard', checkLogin, (req, res) => {
                 <h4>✅ The Solution: Promises & Async/Await</h4>
                 <p>Node.js fixed this with Promises and async/await. The same code now looks flat and clean:</p>
 
-                <pre >
+                <pre>
 <code>try {
     const id = await fs.readFile('user.txt');
     const user = await db.query(`SELECT * FROM users WHERE id=${id}`);
@@ -3246,7 +3264,7 @@ app.get('/dashboard', checkLogin, (req, res) => {
                 <p>First, imagine you are writing a function that takes time (like reading a file). You wrap it in a
                     Promise.</p>
 
-                <pre >
+                <pre>
 <code>const checkNumber = (number) => {
     // Return a new Promise
     return new Promise((resolve, reject) => {
@@ -3264,7 +3282,7 @@ app.get('/dashboard', checkLogin, (req, res) => {
                 <h4>2️⃣ Consuming a Promise (The "Classic" Style)</h4>
                 <p>This uses <code>.then()</code> for success and <code>.catch()</code> for errors.</p>
 
-                <pre >
+                <pre>
 <code>checkNumber(10)
     .then((result) => {
         console.log(result); // Output: "Success! Number is big."
@@ -3280,7 +3298,7 @@ app.get('/dashboard', checkLogin, (req, res) => {
                 <h4>3️⃣ Consuming a Promise (The "Modern" Style - Async/Await)</h4>
                 <p>This is what most developers use today. It looks like synchronous code but waits for the result.</p>
 
-                <pre >
+                <pre>
 <code>const runCheck = async () => {
     try {
         // "await" pauses here until the Promise resolves
@@ -3312,7 +3330,7 @@ runCheck();</code>
                 <h4>1️⃣ The Setup (Creating the Promise)</h4>
                 <p>When you run <code>checkNumber(10)</code>, here is the timeline:</p>
 
-                <pre >
+                <pre>
 <code>// This runs immediately on the Main Thread
 return new Promise((resolve, reject) => {
     // This inner function (executor) also runs immediately!
@@ -3335,7 +3353,7 @@ return new Promise((resolve, reject) => {
 
                 <h4>2️⃣ The Classic Style (.then) Execution</h4>
 
-                <pre >
+                <pre>
 <code>// 1. checkNumber returns the Pending Promise object
 checkNumber(10)
     // 2. .then() registers this function to run LATER (if success)
@@ -3352,7 +3370,7 @@ console.log("I run before the result!");</code>
 </pre>
 
                 <div class="code-output">
-                    <h5 >After 1 Second:</h5>
+                    <h5>After 1 Second:</h5>
                     <ol>
                         <li>The timer finishes. The callback inside <code>setTimeout</code> runs</li>
                         <li><code>if (10 > 5)</code> is true, so it calls <code>resolve("Success...")</code></li>
@@ -3366,7 +3384,7 @@ console.log("I run before the result!");</code>
                 <h4>3️⃣ The Modern Style (async/await) Execution</h4>
                 <p>This looks synchronous, but it's magic.</p>
 
-                <pre >
+                <pre>
 <code>const runCheck = async () => {
     try {
         // 1. checkNumber(10) runs and returns a Pending Promise.
@@ -3412,7 +3430,7 @@ console.log("I also run before the result!");</code>
                     <li>"Inside this function, I am allowed to use the <code>await</code> keyword"</li>
                 </ul>
 
-                <pre >
+                <pre>
 <code>// This function now returns a Promise
 async function hello() {
     return "Hello!";
@@ -3440,9 +3458,11 @@ function hello() {
                     <tbody>
                         <tr>
                             <td style="border: 1px solid #444; padding: 10px;">
-                                <code>myPromise.then(result => ...)</code></td>
+                                <code>myPromise.then(result => ...)</code>
+                            </td>
                             <td style="border: 1px solid #444; padding: 10px;">
-                                <code>const result = await myPromise;</code></td>
+                                <code>const result = await myPromise;</code>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -3452,7 +3472,7 @@ function hello() {
                     2 seconds.</p>
 
                 <h5>Old Way (with .then)</h5>
-                <pre >
+                <pre>
 <code>function showUser() {
     fetchUser()
         .then(username => {
@@ -3462,7 +3482,7 @@ function hello() {
 </pre>
 
                 <h5>New Way (with async/await)</h5>
-                <pre >
+                <pre>
 <code>async function showUser() {
     try {
         // 1. Pause here for 2 seconds
@@ -3495,7 +3515,8 @@ function hello() {
                 <ul>
                     <li><strong>Metadata:</strong> Name of your project, version, author, and description</li>
                     <li><strong>Dependencies:</strong> A list of all the third-party packages (like
-                        <code>express</code>, <code>mongoose</code>, <code>react</code>) your project needs to work</li>
+                        <code>express</code>, <code>mongoose</code>, <code>react</code>) your project needs to work
+                    </li>
                     <li><strong>Scripts:</strong> Shortcuts for running common tasks (like starting the server or
                         running tests)</li>
                 </ul>
@@ -3520,14 +3541,15 @@ function hello() {
                             <td style="border: 1px solid #444; padding: 10px;">Another developer (or a server) can
                                 download your code and run <code>npm install</code>. NPM reads your
                                 <code>package.json</code>, sees the list of dependencies, and downloads exactly the
-                                right versions</td>
+                                right versions
+                            </td>
                         </tr>
                     </tbody>
                 </table>
 
                 <h4>🔑 Key Sections Explained</h4>
 
-                <pre >
+                <pre>
 <code>{
   "name": "my-cool-app",
   "version": "1.0.0",
@@ -3571,7 +3593,7 @@ function hello() {
                     other files.</p>
 
                 <h5>Example (math.js):</h5>
-                <pre >
+                <pre>
 <code>const add = (a, b) => a + b;
 const subtract = (a, b) => a - b;
 
@@ -3584,7 +3606,7 @@ module.exports = { add, subtract };</code>
                     inside the <code>module.exports</code> of that file.</p>
 
                 <h5>Example (app.js):</h5>
-                <pre >
+                <pre>
 <code>// Open the "box" from math.js
 const mathTools = require('./math.js');
 
@@ -3644,10 +3666,11 @@ console.log(mathTools.subtract(5, 2)); // 3</code>
 
                 <h4>🎯 The Interview Trick Question</h4>
                 <p><strong>Question:</strong> "What happens if I write <code>setTimeout(fn, 0)</code> vs
-                    <code>setImmediate(fn)</code>?"</p>
+                    <code>setImmediate(fn)</code>?"
+                </p>
 
                 <h5>Case 1: Global Scope (Unpredictable)</h5>
-                <pre >
+                <pre>
 <code>// Run this multiple times. You might see different orders!
 
 setTimeout(() => {
@@ -3672,7 +3695,7 @@ setImmediate(() => {
                     sometimes <code>setImmediate</code> runs first. It depends on system performance.</p>
 
                 <h5>Case 2: Inside I/O Callback (Predictable)</h5>
-                <pre >
+                <pre>
 <code>const fs = require('fs');
 
 fs.readFile(__filename, () => {
@@ -3695,7 +3718,7 @@ fs.readFile(__filename, () => {
 </pre>
 
                 <div class="code-output">
-                    <h5 >Why setImmediate Always Wins Here:</h5>
+                    <h5>Why setImmediate Always Wins Here:</h5>
                     <ol>
                         <li>The <code>fs.readFile</code> callback finishes in the <strong>Poll phase</strong></li>
                         <li>The Event Loop moves forward</li>
@@ -3708,7 +3731,7 @@ fs.readFile(__filename, () => {
 
                 <h4>💻 Simple setImmediate Example</h4>
 
-                <pre >
+                <pre>
 <code>// 1. This runs first (synchronous)
 console.log('Start');
 
@@ -3735,12 +3758,13 @@ console.log('End');
                 <p><strong>Yes, that is exactly correct!</strong></p>
 
                 <div class="code-output">
-                    <h5 >The Rule of Thumb:</h5>
+                    <h5>The Rule of Thumb:</h5>
                     <p><strong>Synchronous code ALWAYS wins.</strong></p>
                     <p>The Node.js engine (V8) runs your code in a single thread. It will <strong>never, ever
                             stop</strong> running synchronous code to handle an asynchronous task (like
                         <code>setImmediate</code> or <code>setTimeout</code>). It must finish all current synchronous
-                        code (the entire "main" script) before it even looks at the event loop queues.</p>
+                        code (the entire "main" script) before it even looks at the event loop queues.
+                    </p>
                 </div>
 
                 <h5>🍽️ Restaurant Kitchen Analogy:</h5>
@@ -3754,7 +3778,7 @@ console.log('End');
                 <h4>💻 Code Proof</h4>
                 <p>Even if you put <code>setImmediate</code> at the very top, it still runs last:</p>
 
-                <pre >
+                <pre>
 <code>// 1. Scheduled for later (Check Phase)
 setImmediate(() => {
   console.log('Async: I run last (Check Phase)');
@@ -3800,13 +3824,15 @@ console.log('Sync: I run second');
                 <h3>🛡️ How to Handle Exceptions in Node.js</h3>
 
                 <p>Handling exceptions in Node.js requires different approaches depending on whether the code is
-                    <strong>synchronous</strong> or <strong>asynchronous</strong>.</p>
+                    <strong>synchronous</strong> or <strong>asynchronous</strong>.
+                </p>
 
                 <h4>1️⃣ Synchronous Code (try...catch)</h4>
                 <p>For standard synchronous code, use <code>try...catch</code>. If an error occurs in the
-                    <code>try</code> block, execution immediately jumps to <code>catch</code>.</p>
+                    <code>try</code> block, execution immediately jumps to <code>catch</code>.
+                </p>
 
-                <pre >
+                <pre>
 <code>try {
   // 1. Risky synchronous operation
   const result = JSON.parse('{"invalid json string'); 
@@ -3819,10 +3845,11 @@ console.log('Sync: I run second');
 
                 <h4>2️⃣ Asynchronous Code (Promises & Async/Await)</h4>
                 <p>This is the <strong>modern standard</strong>. You can use <code>.catch()</code> for Promises or
-                    <code>try...catch</code> inside an <code>async</code> function.</p>
+                    <code>try...catch</code> inside an <code>async</code> function.
+                </p>
 
                 <h5>Option A: Async/Await (Recommended) ✅</h5>
-                <pre >
+                <pre>
 <code>async function readFile() {
   try {
     const data = await fs.promises.readFile('non-existent-file.txt');
@@ -3834,7 +3861,7 @@ console.log('Sync: I run second');
 </pre>
 
                 <h5>Option B: Promise Chains</h5>
-                <pre >
+                <pre>
 <code>fs.promises.readFile('non-existent-file.txt')
   .then(data => console.log(data))
   .catch(error => console.error('Promise rejected:', error.message));</code>
@@ -3845,7 +3872,7 @@ console.log('Sync: I run second');
                         Callbacks."</strong> You must check the first argument for an error. <code>try...catch</code>
                     will <strong>not work</strong> here.</p>
 
-                <pre >
+                <pre>
 <code>const fs = require('fs');
 
 fs.readFile('non-existent-file.txt', (err, data) => {
@@ -3883,7 +3910,7 @@ fs.readFile('non-existent-file.txt', (err, data) => {
                     </tbody>
                 </table>
 
-                <pre >
+                <pre>
 <code>// Catches "throw new Error()" that was missed
 process.on('uncaughtException', (err) => {
   console.error('CRITICAL: Uncaught Exception:', err);
@@ -3920,7 +3947,8 @@ process.on('unhandledRejection', (reason, promise) => {
 
                     <p><strong>What to say:</strong> "For most business logic, I wrap my <code>await</code> calls in a
                         <code>try...catch</code> block. This keeps the code linear and readable, avoiding 'callback
-                        hell'."</p>
+                        hell'."
+                    </p>
                 </div>
 
                 <h4>2️⃣ The "Deep Knowledge" Add-on: Error-First Callbacks</h4>
@@ -3976,7 +4004,7 @@ process.on('unhandledRejection', (reason, promise) => {
                         functions. This is the modern standard because it makes asynchronous code look clean and easy to
                         read, just like synchronous code."</p>
 
-                    <h5 >Example to show:</h5>
+                    <h5>Example to show:</h5>
                     <pre style="background:#2d2d2d; padding:10px; border-radius:4px; margin-top:10px;">
 <code>async function getData() {
     try {
@@ -3993,9 +4021,10 @@ process.on('unhandledRejection', (reason, promise) => {
                 <div class="code-output">
                     <p><strong>What to say:</strong> "If I'm just using a simple Promise chain without
                         <code>async/await</code>, I use the <code>.catch()</code> method at the end of the chain to
-                        handle any errors that happen in previous steps."</p>
+                        handle any errors that happen in previous steps."
+                    </p>
 
-                    <h5 >Example to show:</h5>
+                    <h5>Example to show:</h5>
                     <pre style="background:#2d2d2d; padding:10px; border-radius:4px; margin-top:10px;">
 <code>fetchUser()
     .then(data => console.log(data))
@@ -4028,7 +4057,8 @@ process.on('unhandledRejection', (reason, promise) => {
                         <tr>
                             <td style="border: 1px solid #444; padding: 10px;"><strong>It's Correct</strong></td>
                             <td style="border: 1px solid #444; padding: 10px;"><code>try...catch</code> with
-                                <code>async/await</code> is exactly what they want you to write on Day 1</td>
+                                <code>async/await</code> is exactly what they want you to write on Day 1
+                            </td>
                         </tr>
                         <tr>
                             <td style="border: 1px solid #444; padding: 10px;"><strong>It's Clear</strong></td>
@@ -4047,7 +4077,8 @@ process.on('unhandledRejection', (reason, promise) => {
                             async functions)</li>
                         <li><strong>Legacy:</strong> Error-first callbacks (Understanding older Node.js APIs)</li>
                         <li><strong>Safety Net:</strong> Global handlers <code>uncaughtException</code> and
-                            <code>unhandledRejection</code> (Production monitoring only)</li>
+                            <code>unhandledRejection</code> (Production monitoring only)
+                        </li>
                     </ol>
                 </div>
 
@@ -4084,51 +4115,33 @@ process.on('unhandledRejection', (reason, promise) => {
 
     </div>
 
-    <script>
-        // Theme Toggle Function
-        function toggleTheme() {
-            const html = document.documentElement;
-            const currentTheme = html.getAttribute('data-theme') || 'light';
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            
-            // Update button text and icon
-            const icon = document.getElementById('theme-icon');
-            const text = document.getElementById('theme-text');
-            
-            if (newTheme === 'dark') {
-                icon.textContent = '☀️';
-                text.textContent = 'Light';
-            } else {
-                icon.textContent = '🌙';
-                text.textContent = 'Dark';
-            }
-        }
+    <script src="app.js"></script>
 
-        // Initialize theme button on page load
-        window.addEventListener('DOMContentLoaded', function() {
-            const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-            const icon = document.getElementById('theme-icon');
-            const text = document.getElementById('theme-text');
-            
-            if (currentTheme === 'dark') {
-                icon.textContent = '☀️';
-                text.textContent = 'Light';
+    <button id="scrollToTop" class="scroll-to-top">↑</button>
+
+    <script>
+        // Get the button
+        const scrollBtn = document.getElementById('scrollToTop');
+
+        // Show button when user scrolls down 300px
+        window.addEventListener('scroll', function () {
+            if (window.pageYOffset > 300) {
+                scrollBtn.classList.add('show');
             } else {
-                icon.textContent = '🌙';
-                text.textContent = 'Dark';
+                scrollBtn.classList.remove('show');
             }
+        });
+
+        // Scroll to top when clicked
+        scrollBtn.addEventListener('click', function () {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         });
     </script>
 
-    <script src="app.js"></script>
 
 </body>
 
 </html>
-
-
-
-
